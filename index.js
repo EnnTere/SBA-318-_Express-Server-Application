@@ -20,7 +20,35 @@ const port = 3000;
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json({ extended: true }))
 
+
+// Middleware - Logging PUT + PATCH (what about others?)
+// Helps keep track of reqs during testing
+// Req, path, req date + time
+app.use((req, res, next) => {
+  const logTime = new Date();
+  console.log(
+    `------
+    ${logTime.toLocaleTimeString()}: Received a ${req.method} request to ${req.url}`
+  );
+  if (Object.keys(req.body).length > 0) {
+    console.log("Data contained: ");
+    console.log(`${JSON.stringify(req.body)}`);
+  }
+  next();
+});
+
+
+
 /////// Reference /////////
+//
+// Use comments to explain why not what - code should be self-explanatory about what it does; Comments should explain reasoning behind code
+// X If  purpose or logic isn't obvious, describe the intention. But restating the code (how it works & what it's doing) in plain language is not a good use
+// X Comments when functions have explicit names that describe what they're doing
+// https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Writing_style_guide/Code_style_guide/JavaScript#comments
+// https://javascript.info/comments
+//
+//
+//
 //
 // res.send - take a non-json object or array and turn it in to another type
 // res.json - converts response to JSON object, including non-objs (null, undefined). 
@@ -40,7 +68,7 @@ app.use(bodyParser.json({ extended: true }))
 //
 //////////////////////////
 
-// Commit - "Refactored to use route method for chaining. Add 404 error handling."
+// Commit - "Refactored to use route method for chaining. Added PUSH and PATCH to chaining. Added 404 error handling."
 
 
 ///// CRUD /////
@@ -52,7 +80,7 @@ app.use(bodyParser.json({ extended: true }))
 
 // GET - read
 // PATCH - update
-// POST / PUT - Creates new / 
+// POST / PUT - creates new
 // DELETE - delete
 
 
@@ -197,10 +225,25 @@ app
     const user = mockData.find((u, i) => {
       if (u.id == req.params.id) { // if the ID provided matches an existing ID
         for (const key in req.body) { // loop through the request body
-          mockData[i][key] = req.body[key]; // look at the key in each index & set key to key in req body (i.e., overwrite it with new value from user)
+          mockData[i][key] = req.body[key]; // look at index i & index key, then set key to key in req body (i.e., overwrite it with new value from user)
       }
       return true; // value has successfully been changed
     }});
+
+    //if the function above returns true
+    if (user) res.json(user); // if PATCH is able to run (i.e., returns T), convert the returned res obj & return the data to the client
+    else next; // Otherwise throw an error
+  })
+  .delete((req, res, next) => {
+    const user = mockData.find((u, i) => {
+      if (u.id == req.params.id) {
+        mockData.splice(i, 1) // remove an item from the array at position i & # of elements to remove = deletes entire user from DB
+        return true;
+      }
+    });
+
+    if (user) res.json(user); // if DELETE is able to run (i.e., returns T), convert the returned res obj & return the deleted user to the client
+    else next; //otherwise throw an error
   });
 
 
