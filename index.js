@@ -1,66 +1,233 @@
 const express = require("express");
 
+// Import body-parser package to better 
+// handle client data from POST + PATCH
+const bodyParser = require("body-parser");
+
+// Import fake data
+const mockData = require("./data")
+
+// Setup server
 const app = express();
 const port = 3000;
 
-// Import fake data
-const mockData = require("./data.js")
-
-
+//why isn't this needed?
 //Middleware - parses JSON req & puts in req.body
-app.use(express.json());
+//app.use(express.json()); 
+
+// Middleware - Parses requests' BODY
+// For both JSON & URLEncoded BODYs
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json({ extended: true }))
+
+/////// Reference /////////
+//
+// res.send - take a non-json object or array and turn it in to another type
+// res.json - converts response to JSON object, including non-objs (null, undefined). 
+//     eventually calls res.send, but before that it:
+//     1. respects the json spaces and json replacer app settings (passes to JSON.stringify)
+//     2. ensures the response will have utf-8 charset and application/json Content-Type
+//
+//
+// W/in app.<method()>'s block - constructs a 
+// response for each endpoint based on the 
+// reading & writing of file data
+//
+//
+// app.route() - route handler that returns instance of a single route, 
+// but is chainable ex. handles GET, POST, DELETE for that single route 
+// in one function. Think of it as route specific middleware
+//
+//////////////////////////
+
+// Commit - "Refactored to use route method for chaining. Add 404 error handling."
 
 
 ///// CRUD /////
 
+// Index Route
+// API Route
+// Data Route
+// Data Property Route
 
-// READ - get all items
+// GET - read
+// PATCH - update
+// POST / PUT - Creates new / 
+// DELETE - delete
+
+
+//// Index Route ////
+
+// GET
 
 app.get("/", (req, res) => {
   res.send("home");
 });
 
+// Does using route matter for "/"?
+// app
+//   .route("/")
+//   .get((req, res) => {
+//     res.json("home")
+//   })
+
+
+// Do I even need a delete here?
+// DELETE
+app.delete("/", (req, res) => {
+  res.send("delete");
+});
+
+
+
+//// API Route ////
+
+// GET
 app.get("/api", (req, res) => {
   res.send("get");
 });
 
-app.get("/api/data", (req, res) => {
-  //res.send("data");
-  res.json(data);
-});
+// Not sure if needed here
+// app
+//   .route("/api")
+//   .get((req, res) => {
+//     res.json()
+//   })
 
-app.get("/api/data/:name", (req, res) => {
-  //res.send("data");
-  const item = mockData.find((i) => i.name == req.params.name)
-  if (item) res.json(item);
-});
-
-
-// POST - creates new item
+// May not need any of these. Can change to use a diff DB later
+// POST
 app.post("/api", (req, res) => {
   res.send("post");
 });
 
 
-// PATCH / PUT - Update an item
+// PUT
 app.put("/api", (req, res) => {
   res.send("put");
 });
 
+// PATCH
+app.patch("/api", (req, res) => {
+  res.send("patch");
+});
+
+
+//// Entire Database Route ////
+
+// GET
+app.get("/api/data", (req, res) => {
+  //res.send("data");
+  res.json(mockData);
+});
+
+
+// id: 
+// name: 
+// picture: 
+// pet: 
+
+
+// POST needs "more robust validation"
+app
+  .route("/api/data")
+  .get((req, res) => {  // GET
+    res.json(mockData);
+  })
+  // Creating a new user
+  .post((req, res) => { // POST
+    if (req.body.id && req.body.name && req.body.picture && req.body.pet)  { //verify all needed data present
+      if (mockData.find((n) => n.name == req.body.name)) { //if new value is same as old value, return error
+        res.json({ error: "You already have an account" });
+        return;
+      }
+
+      const user = { //make new user obj w/ all needed data fields
+        id: [mockData.length - 1].id + 1, //Take length of array, -1 to find next available index, create the next available ID #
+        name: req.body.name,
+        picture: req.body.picture,
+        pet: req.body.pet,
+      };
+
+      mockData.push(user); // add new user to the database array
+      res.json([mockData.length - 1]); // return the last obj in the database array 
+    } else res.json({ error: "Please complete the signup form" });
+      // Incomplete attempt if seeing if I could return the value they forgot w/in the error
+      // {
+      //   if ((req.body.id == null|| req.body.name == null || req.body.picture == null || req.body.pet == null)) {
+      //     res.json({ error: "You already have an account" });
+      //   }
+      // }
+  });
+
+
+// PUT
+app.put("/api", (req, res) => {
+  res.send("put");
+});
+
+// PATCH
 app.patch("/api", (req, res) => {
   res.send("patch");
 });
 
 
 
-// DELETE - delete an item
-app.post("/", (req, res) => {
-  res.send("delete");
+
+
+
+//// Database Property Route ////
+
+// GET
+// Searches mock data response obj for an ID & returns specified param
+app.get("/api/data/:id", (req, res, next) => {
+  const userID = mockData.find((i) => i.id == req.params.id);
+  if (userID) res.json(userID);
+  else next();
+});
+
+// PATCH
+app
+  .route("/api/data/:id")
+  .get((req, res, next) => {
+    const userID = mockData.find((i) => i.id == req.params.id);
+    if (userID) res.json(userID);
+    else next();
+  })
+  .patch((req, res, next) => { // PATCH
+    const user = mockData.find((u, i) => {
+      if (u.id == req.params.id) { // if the ID provided matches an existing ID
+        for (const key in req.body) { // loop through the request body
+          mockData[i][key] = req.body[key]; // look at the key in each index & set key to key in req body (i.e., overwrite it with new value from user)
+      }
+      return true; // value has successfully been changed
+    }});
+  });
+
+
+
+///// Middleware - Errors /////
+
+// Error Test
+// Middleware - General error handler
+app.use((req, res) => {
+  res.status(404);
+  res.json({error: "Error"})
 });
 
 
 
+// Middleware - 404 not found
+// app.use((req, res, next) => {
+//   next(error(404, "Not Found"))
+// });
 
+
+// Slide 41
+// Middleware - General error handler
+// app.use((err, req, res, next) => {
+//   res.status(err.status || 500);
+//   res.json({error: + err.message})
+// });
 
 
 
