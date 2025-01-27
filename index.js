@@ -4,8 +4,15 @@ const express = require("express");
 // handle client data from POST + PATCH
 const bodyParser = require("body-parser");
 
-// Import fake data
-const mockData = require("./data")
+// Import Data - Soon to be obsolete/removed
+const animeData = require("./data/animeData")
+const mockData = require("./data/mockData")
+const mtgData = require("./data/mtgData")
+
+// Import routes
+const animeRte = require("./routes/animeRte")
+const mockRte = require("./routes/mockRte")
+const mtgRte = require("./routes/mtgRte")
 
 // Setup server
 const app = express();
@@ -16,12 +23,11 @@ const port = 3000;
 //app.use(express.json()); 
 
 // Middleware - Parses requests' BODY
-// For both JSON & URLEncoded BODYs
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json({ extended: true }))
 
 
-// Middleware - Logging PUT + PATCH (what about others?)
+// Middleware - Logging requests
 // Helps keep track of reqs during testing
 // Req, path, req date + time
 app.use((req, res, next) => {
@@ -37,7 +43,14 @@ app.use((req, res, next) => {
   next();
 });
 
+// =============================
+// Current TODO
+// =============================
 
+// Using New Routes
+app.use("", animeRte)
+app.use("", mockRte)
+app.use("", mtgRte)
 
 /////// Reference /////////
 //
@@ -66,11 +79,16 @@ app.use((req, res, next) => {
 // but is chainable ex. handles GET, POST, DELETE for that single route 
 // in one function. Think of it as route specific middleware
 //
+// router object is an instance of middleware and route
+// express.Router() - class to create a new route object. A Router instance is a complete middleware and routing system. Used to create modular, mountable route handlers. HTTP method routes (CRUD) can be added.
+//
+//
+//
 //////////////////////////
 
-// Commit - "Refactored to use route method for chaining. Added PUSH and PATCH to chaining. Added 404 error handling."
+// Commit - "Started restructuring data, began transitioning from `app` to `router` for modularity, added additional mock databases for testing."
 
-
+/*
 ///// CRUD /////
 
 // Index Route
@@ -147,7 +165,10 @@ app.get("/api/data", (req, res) => {
   //res.send("data");
   res.json(mockData);
 });
-
+// ====================================
+// ^Currently only points to mockData database
+// v Template for all routes
+// ====================================
 
 // id: 
 // name: 
@@ -156,6 +177,7 @@ app.get("/api/data", (req, res) => {
 
 
 // POST needs "more robust validation"
+// --> Keep code to mock for now so I don't have to update everywhere else. Then when finished add to other routes
 app
   .route("/api/data")
   .get((req, res) => {  // GET
@@ -234,6 +256,7 @@ app
     if (user) res.json(user); // if PATCH is able to run (i.e., returns T), convert the returned res obj & return the data to the client
     else next; // Otherwise throw an error
   })
+  // DELETE
   .delete((req, res, next) => {
     const user = mockData.find((u, i) => {
       if (u.id == req.params.id) {
@@ -246,7 +269,7 @@ app
     else next; //otherwise throw an error
   });
 
-
+*/
 
 ///// Middleware - Errors /////
 
