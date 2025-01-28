@@ -45,7 +45,7 @@ router
 
 // GET
 // Searches mock data response obj for an ID & returns specified param
-router.get(":id", (req, res, next) => { // was /api/data/:id
+router.get("/:id", (req, res, next) => { // was /api/data/:id
   const userID = mockData.find((i) => i.id == req.params.id);
   if (userID) res.json(userID);
   else next();

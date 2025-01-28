@@ -5,14 +5,14 @@ const express = require("express");
 const bodyParser = require("body-parser");
 
 // Import Data - Soon to be obsolete/removed
-const animeData = require("./data/animeData")
-const mockData = require("./data/mockData")
-const mtgData = require("./data/mtgData")
+// const animeData = require("./data/animeData")
+// const mockData = require("./data/mockData")
+// const mtgData = require("./data/mtgData")
 
 // Import routes
-const animeRte = require("./routes/animeRte")
+//const animeRte = require("./routes/animeRte")
 const mockRte = require("./routes/mockRte")
-const mtgRte = require("./routes/mtgRte")
+//const mtgRte = require("./routes/mtgRte")
 
 // Setup server
 const app = express();
@@ -48,9 +48,9 @@ app.use((req, res, next) => {
 // =============================
 
 // Using New Routes
-app.use("", animeRte)
-app.use("", mockRte)
-app.use("", mtgRte)
+//app.use("/animeData", animeRte)
+app.use("/mockData", mockRte)
+//app.use("/mtgData", mtgRte)
 
 /////// Reference /////////
 //
@@ -277,7 +277,7 @@ app
 // Middleware - General error handler
 app.use((req, res) => {
   res.status(404);
-  res.json({error: "Error"})
+  res.json({error: "Error Printed"})
 });
 
 
