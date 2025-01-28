@@ -1,30 +1,57 @@
+// Express Server
 const express = require("express");
-
-// Import body-parser package to better 
-// handle client data from POST + PATCH
-const bodyParser = require("body-parser");
-
-// Import Data - Soon to be obsolete/removed
-// const animeData = require("./data/animeData")
-// const mockData = require("./data/mockData")
-// const mtgData = require("./data/mtgData")
-
-// Import routes
-//const animeRte = require("./routes/animeRte")
-const mockRte = require("./routes/mockRte")
-//const mtgRte = require("./routes/mtgRte")
-
-// Setup server
 const app = express();
 const port = 3000;
 
-//why isn't this needed?
-//Middleware - parses JSON req & puts in req.body
-//app.use(express.json()); 
+app.use(express.static("public"));
+
+// File System & Template Engine
+const fs = require("fs");
+app.engine("template", (filePath, options, callback) => {
+  fs.readFile(filePath, (error, text) => {
+    if (error) return callback(error);
+
+    const templateRender = text
+      .toString()
+      .replaceAll("#title#", `${options.title}`)
+      .replace("#text#", `${options.text}`)
+    return callback(null, templateRender);
+  })
+});
+
+app.set("views", "./views");
+app.set("view engine", "template");
+
+app.get("/", (req, res) => {
+  const options = {
+    title: "Template Title",
+    text: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cumque quod at sint minus error eius, quas doloribus asperiores, veniam, a aliquam quam iusto enim unde quos provident veritatis maiores delectus."
+  };
+  res.render("index", options);
+});
+
 
 // Middleware - Parses requests' BODY
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json({ extended: true }))
+
+// Import body-parser package to better 
+// handle client data from POST + PATCH
+// const bodyParser = require("body-parser");
+// app.use(bodyParser.urlencoded({ extended: true }))
+// app.use(bodyParser.json({ extended: true }))
+
+
+//Middleware - parses client req.body JSON from POST + PATCH
+//app.use(express.urlencoded()); 
+app.use(express.json()); 
+
+
+// Import routes
+//const animeRte = require("./routes/animeRte")
+const mockRte = require("./routes/mockRte");
+const { error } = require("console");
+const { title } = require("process");
+//const mtgRte = require("./routes/mtgRte")
+
 
 
 // Middleware - Logging requests

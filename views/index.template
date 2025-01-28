@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/styles.css" />
+    <title>#title#</title>
+  </head>
+
+  <body>
+    <div id="templateTest">
+      <h1>#title#</h1>
+      <p>#text#</p>
+
+      <!-- POST -->
+      <form action="http://localhost:3000/" method="post">
+        <label for="comment">comment</label>
+        <input type="text" id="comment" name="data" value="testData" />
+        <input type="submit" value="Submit"/>
+      </form>
+
+      <!-- PATCH -->
+      <button action="http://localhost:3000/" method="patch">PATCH</button>
+      
+      <!-- DELETE -->
+      <button action="http://localhost:3000/" method="delete">DELETE</button>
+    </div>
+  </body>
+</html>

@@ -4,16 +4,22 @@ const router = express.Router(); // Route handler
 const mockData = require("../data/mockData");
 
 
-
-// POST needs "more robust validation"
+// =============================
+// Current TODO
+// =============================
 // --> Keep code to mock for now so I don't have to update everywhere else. Then when finished add to other routes
+// POST needs "more robust validation"
+
+
+
+// GET + POST
 router
-  .route("/") // was api/data
-  .get((req, res) => {  // GET
+  .route("/")
+  .get((req, res) => {
     res.json(mockData);
   })
   // Creating a new user
-  .post((req, res) => { // POST
+  .post((req, res) => {
     if (req.body.id && req.body.name && req.body.picture && req.body.pet)  { //verify all needed data present
       if (mockData.find((n) => n.name == req.body.name)) { //if new value is same as old value, return error
         res.json({ error: "You already have an account" });
@@ -39,21 +45,9 @@ router
   });
 
 
-  
-
-//// Database Property Route ////
-
-// GET
-// Searches mock data response obj for an ID & returns specified param
-router.get("/:id", (req, res, next) => { // was /api/data/:id
-  const userID = mockData.find((i) => i.id == req.params.id);
-  if (userID) res.json(userID);
-  else next();
-});
-
-// PATCH
+// GET + PATCH + DELETE
 router
-  .route("/api/data/:id")
+  .route("/:id")
   .get((req, res, next) => {
     const userID = mockData.find((i) => i.id == req.params.id);
     if (userID) res.json(userID);
