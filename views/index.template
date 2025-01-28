@@ -26,11 +26,6 @@
         </div>
 
         <div id="form-group">
-          <label for="pic" id="pic-label"> Picture: </label>
-          <input type="text" id="pic" name="pic" placeholder="Picture? Y/N" required /><br>
-        </div>
-
-        <div id="form-group">
           <label for="pet" id="pet-label"> Pet: </label>
           <input type="text" id="pet" name="pet" placeholder="Pet's Name" required /><br>
         </div>

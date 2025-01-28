@@ -23,7 +23,7 @@ router
     res.render("./index.template", options)
   })
   .post((req, res) => {
-    if (req.body.id && req.body.name && req.body.picture && req.body.pet)  {
+    if (req.body.id && req.body.name && req.body.pet)  {
       if (mockData.find((n) => n.name == req.body.name)) {
         res.json({ error: "You already have an account" });
         return;
@@ -32,7 +32,6 @@ router
       const user = {
         id: [mockData.length - 1].id + 1,
         name: req.body.name,
-        picture: req.body.picture,
         pet: req.body.pet,
       };
 

@@ -2,7 +2,7 @@
 const express = require("express");
 const app = express();
 const port = 3000;
-
+const bodyParser = require("body-parser")
 const { error } = require("console");
 const { title } = require("process");
 
@@ -39,7 +39,11 @@ app.get("/", (req, res) => {
 
 // Parser
 //app.use(express.urlencoded()); 
-app.use(express.json()); 
+//app.use(express.json()); 
+
+// Body Parser
+app.use(bodyParser.json({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true })); 
 
 // Logging requests
 app.use((req, res, next) => {
