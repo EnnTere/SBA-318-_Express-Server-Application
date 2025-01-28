@@ -14,32 +14,38 @@
     <div id="template-test">
 
       <!-- POST -->
-      <form action="http://localhost:3000/" method="post">
-        <label for="comment">Comment </label>
-        <input type="text" id="comment" name="data" placeholder="Leave a comment"class="form-input" />
-        <input type="submit" value="Submit"/>
+      <form id="post-form" action="http://localhost:3000/mockData" method="post">
+        <div id="form-group">
+          <label for="id" id="id-label"> ID: </label>
+          <input type="text" id="id" name="id" placeholder="User ID" required /><br>
+        </div>
+
+        <div id="form-group">
+          <label for="name" id="name-label"> Name: </label>
+          <input type="text" id="name" name="name" placeholder="First Name" required /><br>
+        </div>
+
+        <div id="form-group">
+          <label for="pic" id="pic-label"> Picture: </label>
+          <input type="text" id="pic" name="pic" placeholder="Picture? Y/N" required /><br>
+        </div>
+
+        <div id="form-group">
+          <label for="pet" id="pet-label"> Pet: </label>
+          <input type="text" id="pet" name="pet" placeholder="Pet's Name" required /><br>
+        </div>
+        <input type="submit" value="Submit" />
       </form>
 
-      <!-- PATCH -->
-      <button action="http://localhost:3000/" method="patch">Edit (PATCH)</button>
-      
-      <!-- DELETE -->
-      <button action="http://localhost:3000/" method="delete">DELETE</button>
-    </div>
+      <div>
+        <!-- PATCH -->
+        <button action="http://localhost:3000/mockData" method="patch">Edit (PATCH)</button>
+      </div>
 
-    <!-- <section id="app">
-        <div class="container">
-            <div class="comments-container"></div>
-            <div>
-                <textarea id="commentInput" placeholder="Write a comment"></textarea>
-                <div class="button-container">
-                  <button class="btn-submit" type="submit">Add Comment</button>
-                  <button class="btn-submit" type="submit">Add Comment</button>
-                  <button class="btn-submit" type="submit">Add Comment</button>
-                </div>
-                <button class="btn-submit" type="submit">Add Comment</button>
-            </div>
-        </div>
-    </section> -->
+      <div>
+        <!-- DELETE -->
+        <button action="http://localhost:3000/mockData" method="delete">DELETE</button>
+      </div>
+    </div>
   </body>
 </html>

@@ -15,9 +15,13 @@ const mockData = require("../data/mockData");
 router
   .route("/")
   .get((req, res) => {
-    res.json(mockData);
+    //res.json(mockData);
+    const options = {
+      title: "MockData",
+      text: "Lorem ipsum dolor sit, amet consectetur adipisicing elit."
+    }
+    res.render("./index.template", options)
   })
-  // Creating a new user
   .post((req, res) => {
     if (req.body.id && req.body.name && req.body.picture && req.body.pet)  {
       if (mockData.find((n) => n.name == req.body.name)) {

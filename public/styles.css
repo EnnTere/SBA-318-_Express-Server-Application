@@ -40,15 +40,25 @@ body {
   display: block;
 } */
 
-.form-input {
+/* .form-input {
   width: clamp(100px, 50vw, 420px);
   height: 50px;
-  padding: 0 20px;
+  padding: 0 20px; */
   /* color: var(--main-color); */
-  font-family: var(--body-font);
+  /* font-family: var(--body-font);
   border: 1px solid;
   border-radius: 1px 1px 2px 2px;
   margin: 0 auto 10px auto;
+} */
+
+input {
+  margin-bottom: 15px;
+}
+
+#form-group label {
+  display: inline-block;
+  width: 60px;
+  margin-right: 25px;
 }
 
 h1 {
@@ -74,7 +84,7 @@ body {
   line-height: 1.5;
 } */
 
-#app {
+/* #app {
   width: 80%;
 }
 
@@ -148,4 +158,4 @@ body {
 
 .comments-container {
   margin-bottom: 2rem;
-}
+} */

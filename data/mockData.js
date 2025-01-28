@@ -1,22 +1,23 @@
 // Mock database
+// turned everything in to a string last moment for ease of testing
 
 const mockData = [
   {
-    id: 1, 
+    id: "1", 
     name: "catPic",
-    picture: true,
+    picture: "true",
     pet: "cat",
   },
   {
-    id: 2, 
+    id: "2", 
     name: "lizardNoPic",
-    picture: false,
+    picture: "false",
     pet: "lizard",
   },
   {
-    id: 3, 
+    id: "3", 
     name: "frogPic",
-    picture: true,
+    picture: "true",
     pet: "frog",
   },
 ];
