@@ -8,22 +8,38 @@
   </head>
 
   <body>
-    <div id="templateTest">
-      <h1>#title#</h1>
-      <p>#text#</p>
+    <h1>#title#</h1>
+    <p>#text#</p>
+
+    <div id="template-test">
 
       <!-- POST -->
       <form action="http://localhost:3000/" method="post">
-        <label for="comment">comment</label>
-        <input type="text" id="comment" name="data" value="testData" />
+        <label for="comment">Comment </label>
+        <input type="text" id="comment" name="data" placeholder="Leave a comment"class="form-input" />
         <input type="submit" value="Submit"/>
       </form>
 
       <!-- PATCH -->
-      <button action="http://localhost:3000/" method="patch">PATCH</button>
+      <button action="http://localhost:3000/" method="patch">Edit (PATCH)</button>
       
       <!-- DELETE -->
       <button action="http://localhost:3000/" method="delete">DELETE</button>
     </div>
+
+    <!-- <section id="app">
+        <div class="container">
+            <div class="comments-container"></div>
+            <div>
+                <textarea id="commentInput" placeholder="Write a comment"></textarea>
+                <div class="button-container">
+                  <button class="btn-submit" type="submit">Add Comment</button>
+                  <button class="btn-submit" type="submit">Add Comment</button>
+                  <button class="btn-submit" type="submit">Add Comment</button>
+                </div>
+                <button class="btn-submit" type="submit">Add Comment</button>
+            </div>
+        </div>
+    </section> -->
   </body>
 </html>
